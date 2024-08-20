@@ -1,0 +1,56 @@
+package com.ray.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ray.model.Product;
+import com.ray.repository.ProductRepository;
+@Service
+public class ProductServieImpl implements ProductService {
+	@Autowired
+	private ProductRepository repo;
+
+	@Override
+	public Product saveProduct(Product product) {
+		// TODO Auto-generated method stub
+		return repo.save(product);
+	}
+
+	@Override
+	public List<Product> getAllProduct() {
+		// TODO Auto-generated method stub
+		return repo.findAll();
+	}
+
+	@Override
+	public Product getProductById(Integer id) {
+		// TODO Auto-generated method stub
+		return repo.findById(id).get();
+	}
+
+	@Override
+	public String deleteProduct(Integer id) {
+		// TODO Auto-generated method stub
+		Product p=repo.findById(id).get();
+		if(p!=null) {
+			repo.delete(p);
+			return "product deleted successfully";
+		}
+		return "Something went wrong on server";
+	}
+
+	@Override
+	public Product editProduct(Product p, Integer id) {
+		// TODO Auto-generated method stub
+		Product oldProduct=repo.findById(id).get();
+		oldProduct.setProductName(p.getProductName());
+		oldProduct.setDescription(p.getDescription());
+		oldProduct.setPrice(p.getPrice());
+		oldProduct.setStatus(p.getStatus());
+		return repo.save(oldProduct);
+	}
+	
+
+}
